@@ -1,0 +1,72 @@
+@startuml
+title Graph Traversal Trade-off Project Structure
+
+package "experiments" {
+  class Experiment {
+    +run(graph: Graph, algo: TraversalAlgorithm)
+    +record_metrics()
+  }
+
+  class GraphGenerator {
+    +generate_sparse_graph()
+    +generate_dense_graph()
+  }
+}
+
+package "algorithms" {
+  abstract class TraversalAlgorithm {
+    +run(graph: Graph, start)
+  }
+
+  class BFS {
+    +run(graph: Graph, start)
+  }
+
+  class DFS {
+    +run(graph: Graph, start)
+  }
+}
+
+package "graph" {
+  abstract class Graph {
+    +neighbors(v)
+    +vertices()
+  }
+
+  class AdjacencyListGraph {
+    -adj: dict
+    +neighbors(v)
+    +vertices()
+    +add_edge(u, v)
+  }
+
+  class AdjacencyMatrixGraph {
+    -matrix
+    +neighbors(v)
+    +vertices()
+    +add_edge(u, v)
+  }
+}
+
+class TraversalResult {
+  +visited_order
+  +visited_count
+  +peak_frontier
+  +runtime
+}
+
+TraversalAlgorithm <|-- BFS
+TraversalAlgorithm <|-- DFS
+
+Graph <|-- AdjacencyListGraph
+Graph <|-- AdjacencyMatrixGraph
+
+Experiment --> Graph : uses
+Experiment --> TraversalAlgorithm : runs
+Experiment --> TraversalResult : produces
+GraphGenerator --> Graph : creates
+
+TraversalAlgorithm --> Graph : traverses
+TraversalAlgorithm --> TraversalResult : returns
+
+@enduml

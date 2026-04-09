@@ -1,0 +1,18 @@
+@startuml
+title Space-Time Trade-offs in Graph Traversal under a Fixed Graph Model
+
+component "Experiment Runner" as ER
+component "Traversal Policy\n(BFSPolicy / DFSPolicy)" as TA
+interface "Graph ADT" as G
+component "Adjacency List" as AL
+component "Adjacency Matrix" as AM
+component "Metrics\nruntime / visited / peak frontier" as M
+
+ER --> TA : run
+TA --> G : use
+AL ..|> G : implement
+AM ..|> G : implement
+ER --> M : collect
+TA --> M : produce
+
+@enduml

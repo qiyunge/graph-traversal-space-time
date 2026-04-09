@@ -1,0 +1,88 @@
+@startuml
+title Graph Traversal Trade-off Project (Python-oriented Class Diagram)
+
+skinparam classAttributeIconSize 0
+
+package "graph" {
+  abstract class Graph {
+    +neighbors(v: int): list[int]
+    +vertices(): list[int]
+    +vertex_count(): int
+    +edge_count(): int
+  }
+
+  class AdjacencyListGraph {
+    -_adj: dict[int, list[int]]
+    +__init__(adj: dict[int, list[int]])
+    +neighbors(v: int): list[int]
+    +vertices(): list[int]
+    +vertex_count(): int
+    +edge_count(): int
+    +add_edge(u: int, v: int): None
+  }
+
+  class AdjacencyMatrixGraph {
+    -_matrix: list[list[int]]
+    +__init__(matrix: list[list[int]])
+    +neighbors(v: int): list[int]
+    +vertices(): list[int]
+    +vertex_count(): int
+    +edge_count(): int
+    +add_edge(u: int, v: int): None
+  }
+}
+
+package "algorithms" {
+  abstract class TraversalAlgorithm {
+    +run(graph: Graph, start: int): TraversalResult
+  }
+
+  class BFS {
+    +run(graph: Graph, start: int): TraversalResult
+  }
+
+  class DFS {
+    +run(graph: Graph, start: int): TraversalResult
+  }
+}
+
+package "results" {
+  class TraversalResult <<dataclass>> {
+    +visited_order: list[int]
+    +visited_count: int
+    +peak_frontier: int
+    +runtime_seconds: float
+  }
+}
+
+package "experiments" {
+  class GraphGenerator {
+    +random_sparse(n: int, m: int): Graph
+    +random_dense(n: int): Graph
+    +grid(rows: int, cols: int): Graph
+  }
+
+  class ExperimentRunner {
+    +run_once(graph: Graph, algo: TraversalAlgorithm, start: int): TraversalResult
+    +run_suite(): list[TraversalResult]
+    +save_csv(path: str): None
+  }
+}
+
+Graph <|-- AdjacencyListGraph
+Graph <|-- AdjacencyMatrixGraph
+
+TraversalAlgorithm <|-- BFS
+TraversalAlgorithm <|-- DFS
+
+TraversalAlgorithm --> Graph : traverses
+TraversalAlgorithm --> TraversalResult : returns
+
+ExperimentRunner --> Graph : uses
+ExperimentRunner --> TraversalAlgorithm : runs
+ExperimentRunner --> TraversalResult : collects
+
+GraphGenerator --> AdjacencyListGraph : creates
+GraphGenerator --> AdjacencyMatrixGraph : creates
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+title Graph Traversal Trade-off System Overview
+
+component "Experiment Layer" as Experiment
+component "Traversal Algorithms" as Algo
+component "Graph ADT" as GraphADT
+component "Graph Representations" as GraphImpl
+component "Metrics / Results" as Metrics
+
+Experiment --> Algo : select and run
+Algo --> GraphADT : use interface
+GraphImpl ..|> GraphADT : implement
+Experiment --> Metrics : collect
+Algo --> Metrics : runtime / frontier / visited
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+title Space-Time Trade-offs in Graph Traversal under a Fixed Graph Model
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+top to bottom direction
+
+component "Experiment Runner" as ER
+
+component "Traversal Algorithms\n(BFS / DFS)" as TA
+
+interface "Graph ADT" as G
+
+component "Adjacency List" as AL
+component "Adjacency Matrix" as AM
+
+component "Metrics Collector\n(runtime / visited / peak frontier)" as M
+
+ER --> TA : execute
+TA --> G : traverse
+
+AL ..|> G
+AM ..|> G
+
+TA --> M : produce
+ER --> M : collect
+
+@enduml
