@@ -9,5 +9,6 @@ class BenchmarkRecord:
     n: int
     runtime_sec: float
     peak_frontier: int
+    visited_count: int
     edge_prob: float | None = None
     runtime_env:str = "python"

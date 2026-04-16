@@ -9,9 +9,10 @@ from graph_tradeoff.core.traversals.dfs import dfs
 from graph_tradeoff.data.dataset_manager import DatasetManager
 
 from .types import ExecutionSpec,ExecutionResult
+from graph_tradeoff.config import CPP_EXE_DIR
 
 
-cpp_executor_path = "cpp/build/Debug/graph_tradeoff.exe"  # Update this path to your C++ executable
+cpp_executor_path = CPP_EXE_DIR / "graph_tradeoff.exe"  # Update this path to your C++ executable
 
 def run_cpp_executor(execution_spec: ExecutionSpec, dataset_manager: DatasetManager)->ExecutionResult:
     graph_spec = execution_spec.graph_spec
@@ -22,10 +23,8 @@ def run_cpp_executor(execution_spec: ExecutionSpec, dataset_manager: DatasetMana
     directed = graph_spec.directed
     start_vertex = execution_spec.start_vertex
 
-    print(f"Running C++ executor with graph_spec: {graph_spec}, representation: {representation}, traversal: {traversal_kind}, directed: {directed}, start_vertex: {start_vertex}")
-    print(f"Running C++ executor with graph_spec: {graph_spec}, representation: {representation.value}, traversal: {traversal_kind.value}, directed: {directed}, start_vertex: {start_vertex}")
-
-    cmd = [cpp_executor_path, "--meta",str(meta_path.resolve()),
+ 
+    cmd = [str(cpp_executor_path), "--meta",  str(meta_path.resolve()),
            "--repr", representation.value, "--algo", traversal_kind.value]
     print(f"Running C++ executor with command: {' '.join(cmd)}")
     # Convert the input data to JSON format
@@ -40,7 +39,7 @@ def run_cpp_executor(execution_spec: ExecutionSpec, dataset_manager: DatasetMana
             error=result.stderr
         )
   
-    print(f"C++ Executor Output:\n{result.stdout}")
+    print(f"C++ Executor Output:\n{json.dumps(stats, indent=2)}")
     # cpp_output = json.loads(result.stdout)
     # stats = TraversalStatistics(visited_count=cpp_output["visited_count"], peak_frontier=cpp_output["peak_frontier"], order=cpp_output["order"]  )
 

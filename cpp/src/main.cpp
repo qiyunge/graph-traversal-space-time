@@ -24,8 +24,8 @@ int main(int argc, char* argv[]) {
     try {
         // GraphBuildConfig config{};
         ExecutionConfig exec_config{};
-        bool benchmark_all = false;
-        TraversalType traversal = TraversalType::BFS;
+      
+      
 
         for (int i = 1; i < argc; ++i) {
             const std::string arg = argv[i];

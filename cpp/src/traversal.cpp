@@ -75,6 +75,8 @@ namespace graph_tradeoff
 
         std::vector<bool> visited(graph.num_vertices(), false);
         std::vector<int> stack;
+
+        visited[static_cast<std::size_t>(start_vertex)] = true;
         stack.push_back(start_vertex);
 
         TraversalMetrics metrics{};
@@ -84,12 +86,6 @@ namespace graph_tradeoff
             const int u = stack.back();
             stack.pop_back();
 
-            if (visited[static_cast<std::size_t>(u)])
-            {
-                continue;
-            }
-
-            visited[static_cast<std::size_t>(u)] = true;
             ++metrics.visited_nodes;
 
             auto nbrs = graph.neighbors(u);
@@ -97,13 +93,13 @@ namespace graph_tradeoff
             {
                 if (!visited[static_cast<std::size_t>(*it)])
                 {
+                    visited[static_cast<std::size_t>(*it)] = true;
                     stack.push_back(*it);
                 }
             }
         }
         return metrics;
     }
-
     TraversalMetrics run_traversal(const Graph &graph, TraversalType traversal_type, int start_vertex)
     {
         utils::validate_vertex(graph, start_vertex);

@@ -2,4 +2,8 @@
 .egg-info
 dist
 build
+datasets
+results
+out
+
 __pycache__

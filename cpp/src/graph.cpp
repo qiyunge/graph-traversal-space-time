@@ -35,20 +35,10 @@ namespace graph_tradeoff
         return std::ranges::find(neighbors, v) != neighbors.end();
     }
 
-    std::vector<int> AdjacencyListGraph::neighbors(int u) const
+    NeighborView AdjacencyListGraph::neighbors(int u) const
     {
         utils::validate_vertex(*this, u);
-        std::vector<int> result;
-        const auto &row = adjacency_list_[static_cast<std::size_t>(u)];
-        result.reserve(row.size());
-        for (int v = 0; v < static_cast<int>(row.size()); ++v)
-        {
-            if (row[v])
-            {
-                result.push_back(v);
-            }
-        }
-        return result;
+        return NeighborView(adjacency_list_[static_cast<std::size_t>(u)]);
     }
 
     std::string AdjacencyListGraph::name() const
@@ -81,21 +71,22 @@ namespace graph_tradeoff
         return matrix_[u][v];
     }
 
-    std::vector<int> AdjacencyMatrixGraph::neighbors(int u) const
-    {
-        utils::validate_vertex(*this, u);
-        std::vector<int> result;
-        const auto &row = matrix_[static_cast<std::size_t>(u)];
-        result.reserve(row.size());
-        for (std::size_t i = 0; i < row.size(); ++i)
-        {
-            if (row[i])
-            {
-                result.push_back(static_cast<int>(i));
-            }
+  NeighborView AdjacencyMatrixGraph::neighbors(int u) const
+{
+    utils::validate_vertex(*this, u);
+
+    std::vector<int> result;
+    const auto& row = matrix_[static_cast<std::size_t>(u)];
+    result.reserve(row.size());
+
+    for (std::size_t i = 0; i < row.size(); ++i) {
+        if (row[i]) {
+            result.push_back(static_cast<int>(i));
         }
-        return result;
     }
+
+    return NeighborView(std::move(result));
+}
 
     std::string AdjacencyMatrixGraph::name() const
     {

@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 
+#include "graph_tradeoff/neighbor_view.hpp"
+
 namespace graph_tradeoff {  
     enum class GraphRepresentation {
         AdjacencyList,
@@ -18,7 +20,7 @@ namespace graph_tradeoff {
         virtual std::size_t num_vertices() const = 0;
         virtual void add_edge(int u, int v) = 0;
         virtual bool has_edge(int u, int v) const = 0;
-        virtual std::vector<int> neighbors(int u) const = 0;
+        virtual NeighborView neighbors(int u) const = 0;
         virtual std::string name() const = 0;
 
     };
@@ -29,7 +31,7 @@ namespace graph_tradeoff {
         std::size_t num_vertices() const override;
         void add_edge(int u, int v) override;
         bool has_edge(int u, int v) const override;
-        std::vector<int> neighbors(int u) const override;
+        NeighborView neighbors(int u) const override;
         std::string name() const override;
 
         ~AdjacencyListGraph() override = default;
@@ -46,8 +48,9 @@ namespace graph_tradeoff {
         std::size_t num_vertices() const override;
         void add_edge(int u, int v) override;
         bool has_edge(int u, int v) const override;
-        std::vector<int> neighbors(int u) const override;
+        NeighborView neighbors(int u) const override;
         std::string name() const override;
+        ~AdjacencyMatrixGraph() override = default;
 
     private:
         std::vector<std::vector<bool>> matrix_;

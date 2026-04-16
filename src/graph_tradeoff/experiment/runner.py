@@ -5,19 +5,21 @@ from graph_tradeoff.data.dataset_manager import DatasetManager
 from graph_tradeoff.execution.types import Backend, ExecutionSpec, ExecutionResult   
 from graph_tradeoff.execution.factory import get_executor
 from graph_tradeoff.data import GraphSpec
+from .types import ExperimentRecord, ExperimentSpec, ExperimentResult
 
-from .types import ExperimentSpec, ExperimentResult
 
 
 
 def run_experiment_once(
 
     experiment_spec:ExperimentSpec,
-    dataset_manager:DatasetManager,
     dataset_split:str = "cache"
 
    
-) -> ExperimentResult:
+) -> ExperimentRecord:
+    
+    dataset_path = Path(experiment_spec.dataset_path)
+    dataset_manager = DatasetManager(dataset_path)
     
     graph_spec=GraphSpec(
         num_vertices=experiment_spec.num_vertices,
@@ -38,16 +40,20 @@ def run_experiment_once(
     executor = get_executor(execution_spec.backend)
     dataset_manager.ensure_dataset(graph_spec, split=dataset_split)
     
-    print(f"edge_file_path: {dataset_manager.get_paths(graph_spec).edge_file}")
-
+    
     execution_rst = executor(execution_spec,dataset_manager)
     if execution_rst.error is not None:
         raise RuntimeError(f"Execution failed with error: {execution_rst.error}")
-    return ExperimentResult(
+    
+    result = ExperimentResult(
         traversal_order=execution_rst.traversal_stats.order,
         traversal_visited_count=execution_rst.traversal_stats.visited_count,
         traversal_peak_frontier=execution_rst.traversal_stats.peak_frontier,
         runtime_sec=execution_rst.runtime_sec
+    )
+    return ExperimentRecord(
+        experiment_spec=experiment_spec,
+        experiment_result=result
     )
 
     
