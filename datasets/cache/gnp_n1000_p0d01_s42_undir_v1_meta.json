@@ -1,0 +1,13 @@
+{
+    "graph_id": "gnp_n1000_p0d01_s42_undir_v1",
+    "graph_type": "gnp",
+    "num_vertices": 1000,
+    "num_edges": 4985,
+    "directed": false,
+    "seed": 42,
+    "generator_version": "v1",
+    "edge_file": "gnp_n1000_p0d01_s42_undir_v1_edges.csv",
+    "params": {
+        "edge_prob": 0.01
+    }
+}

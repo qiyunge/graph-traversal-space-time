@@ -1,13 +1,5 @@
 from dataclasses import dataclass
 
-from graph_tradeoff.graph.traversals.results import TraversalResult
-
-
-@dataclass(frozen=True)
-class ExperimentResult:
-    traversal: TraversalResult
-    runtime_sec: float
-
 
 @dataclass(frozen=True)
 class BenchmarkRecord:

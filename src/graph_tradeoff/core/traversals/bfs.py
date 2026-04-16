@@ -1,10 +1,10 @@
 from collections import deque
 
-from graph_tradeoff.graph.graph_adt import Graph
-from graph_tradeoff.graph.traversals.results import TraversalResult
+from graph_tradeoff.core.graph.graph_adt import Graph
+from graph_tradeoff.core.types import TraversalStatistics
 
 
-def bfs(graph: Graph, start: int) -> TraversalResult:
+def bfs(graph: Graph, start: int) -> TraversalStatistics:
     n = graph.num_vertices()
     if not 0 <= start < n:
         raise IndexError(f"start vertex {start} out of range [0, {n})")
@@ -27,7 +27,7 @@ def bfs(graph: Graph, start: int) -> TraversalResult:
                 visited[u] = True
                 queue.append(u)
 
-    return TraversalResult(
+    return TraversalStatistics(
         order=order,
         visited_count=len(order),
         peak_frontier=peak_frontier,

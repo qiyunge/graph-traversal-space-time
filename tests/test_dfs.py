@@ -1,5 +1,5 @@
-from graph_tradeoff.graph.adjacency_list import AdjacencyListGraph
-from graph_tradeoff.graph.traversals.dfs import dfs
+from graph_tradeoff.core.graph.adjacency_list import AdjacencyListGraph
+from graph_tradeoff.core.traversals.dfs import dfs
 
 
 def build_sample_graph():

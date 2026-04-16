@@ -1,5 +1,5 @@
-from graph_tradeoff.graph.adjacency_list import AdjacencyListGraph
-from graph_tradeoff.graph.traversals.bfs import bfs
+from graph_tradeoff.core.graph.adjacency_list import AdjacencyListGraph
+from graph_tradeoff.core.traversals.bfs import bfs
 
 edges = [
     (0, 1),

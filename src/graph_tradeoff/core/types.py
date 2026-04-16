@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class TraversalResult:
+class TraversalStatistics:
     order: list[int]
     visited_count: int
     peak_frontier: int

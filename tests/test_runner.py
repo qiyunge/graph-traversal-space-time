@@ -1,6 +1,6 @@
 from graph_tradeoff.experiment.runner import run_once
-from graph_tradeoff.graph.adjacency_list import AdjacencyListGraph
-from graph_tradeoff.graph.traversals.bfs import bfs
+from graph_tradeoff.core.graph.adjacency_list import AdjacencyListGraph
+from graph_tradeoff.core.traversals.bfs import bfs
 
 
 def build_sample_graph():

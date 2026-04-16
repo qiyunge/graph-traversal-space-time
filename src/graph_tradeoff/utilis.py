@@ -1,5 +1,5 @@
 from typing import Type
-from .graph.graph_adt import Graph
+from .core.graph.graph_adt import Graph
 
 
 def build_graph(graph_cls: Type[Graph], n: int, edges: list[tuple[int, int]]) -> Graph:
