@@ -1,5 +1,9 @@
+pandas
+matplotlib
 
 [dev]
 pytest
 black
 ruff
+jupyterlab>=4.0
+ipykernel

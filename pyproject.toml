@@ -13,10 +13,10 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 
-dependencies = []
+dependencies = ["pandas", "matplotlib"]
 
 [project.optional-dependencies]
-dev = ["pytest","black","ruff"]
+dev = ["pytest","black","ruff","jupyterlab>=4.0","ipykernel"]
 
 
 [project.scripts]
@@ -25,7 +25,7 @@ tradeoff = "graph_tradeoff.main:main"
 [tool.setuptools]
 package-dir={"" = "src"}
 
-[tool.setuptools.package.find]
+[tool.setuptools.packages.find]
 where=["src"]
 
 [tool.black]

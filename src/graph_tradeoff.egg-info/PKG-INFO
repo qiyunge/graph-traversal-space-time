@@ -5,10 +5,14 @@ Summary: Graph traversal benchmarking framework for studying time-space trade-of
 Author: Qiyun Ge
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: matplotlib
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: black; extra == "dev"
 Requires-Dist: ruff; extra == "dev"
+Requires-Dist: jupyterlab>=4.0; extra == "dev"
+Requires-Dist: ipykernel; extra == "dev"
 
 # Graph Traversal Benchmarking Framework
 

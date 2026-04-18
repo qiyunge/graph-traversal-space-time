@@ -6,7 +6,7 @@ from graph_tradeoff.experiment  import ExperimentSpec
 from graph_tradeoff.benchmark.export import export_to_csv
 from graph_tradeoff  import config
 
-ps = [0.01, 0.05, 0.1,0.6]
+ps = [ 0.05, 0.2,0.5,0.8 ]
 
 graph_reprs = [
     "adj_list",
@@ -23,10 +23,10 @@ backends = [
     "cpp"
 ]
 
-sizes = [ 1000]
+sizes = [1000, 10000]
 graphy_types = ["gnp"]
 
-dataset_path = "datasets" 
+dataset_path = config.DATASETS_DIR
 
  
 seed = 42

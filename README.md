@@ -1,237 +1,153 @@
 # Graph Traversal Benchmarking Framework
 
-### Space–Time Trade-offs under a Fixed Graph Model
+### Space–Time Trade-offs in Graph Traversal  
+*An Empirical Study of BFS, DFS, and Graph Representations*
 
 ---
 
 ## 🧠 Overview
 
-This project builds a **controlled experimental framework** to analyze the **practical time–space trade-offs** of graph traversal algorithms, focusing on:
+This project builds a **controlled experimental framework** to analyze the **practical time–space trade-offs** of graph traversal algorithms.
 
-* Breadth-First Search (BFS)
-* Depth-First Search (DFS)
+We focus on:
 
-under different graph representations:
+- Algorithms: **BFS / DFS**
+- Representations: **Adjacency List / Adjacency Matrix**
+- Runtime environments: **Python vs C++**
 
-* Adjacency List
-* Adjacency Matrix
-
-Although BFS and DFS share the same asymptotic complexity:
-
-```
-O(V + E)
-```
-
-their **practical behavior differs significantly** in:
-
-* Memory usage (frontier size)
-* Traversal pattern
-* Runtime constants
-
-This project isolates these effects through a **unified Graph ADT abstraction** and a **reproducible benchmarking pipeline**.
+The goal is to understand how **algorithm choice, data structure, and execution environment** jointly affect performance.
 
 ---
 
 ## 🎯 Objectives
 
-* Design a **Graph ADT** to decouple algorithms from representations
-* Implement BFS and DFS under a consistent computational model
-* Compare **Adjacency List vs Matrix** in traversal scenarios
-* Measure:
-
-  * Runtime
-  * Visited nodes
-  * Peak frontier size
-* Build a **reproducible experimental system**
-* Validate results using both **Python and C++ implementations**
-
----
-
-## 🧩 System Architecture
-
-```
-Experiment Runner
-        ↓
-Traversal Algorithms (BFS / DFS)
-        ↓
-Graph ADT Interface
-       / \
-Adjacency List   Adjacency Matrix
-        ↓
-Metrics Collection
-(runtime / visited / peak frontier)
-```
-
-Key design principle:
-
-> Separation of abstraction and implementation to isolate algorithmic behavior from representation effects.
+- Design a **Graph ADT abstraction layer**
+- Decouple:
+  - traversal logic  
+  - graph representation  
+- Build a **reproducible benchmarking pipeline**
+- Measure:
+  - runtime  
+  - visited nodes  
+  - peak frontier (exploration scale)
+- Compare results across **Python and C++**
 
 ---
 
-## ⚙️ Project Structure
+## 🧩 Project Structure
+``` txt
+        graph-tradeoff/
+        ├── analysis/ # notebook + exported report ⭐⭐⭐
+        │ ├── analysis.ipynb
+        │ └── analysis.html
+        │
+        ├── cpp/ # C++ implementation
+        │ ├── include/
+        │ ├── src/
+        │ ├── build/
+        │ └── CMakeLists.txt
+        │
+        ├── src/graph_tradeoff/ # Python core package
+        │ ├── core/ # graph abstraction & data model
+        │ ├── execution/ # traversal execution layer
+        │ ├── experiment/ # experiment runner
+        │ ├── metrics/ # metrics + plotting
+        │ ├── benchmark/ # benchmark orchestration
+        │ ├── data/ # graph generation / loading
+        │ ├── config.py # experiment configuration ⭐
+        │ └── main.py # entry point
+        │
+        ├── datasets/ # generated graph data
+        ├── outputs/ # intermediate outputs
+        ├── results/ # final results
+        ├── reports/ # exported reports
+        └── tests/
+```
 
-```
-graph-tradeoff/
-├── src/
-│   ├── graph/
-│   │   ├── graph_adt.py
-│   │   ├── adjacency_list.py
-│   │   └── adjacency_matrix.py
-│   ├── traversals/
-│   │   ├── bfs.py
-│   │   └── dfs.py
-│   ├── experiment/
-│   │   ├── runner.py
-│   │   └── metrics.py
-│   └── main.py
-│
-├── cpp/
-│   ├── bfs.cpp
-│   ├── dfs.cpp
-│   └── main.cpp
-│
-├── data/
-├── results/
-└── README.md
-```
 
 ---
 
-## 🚀 Getting Started
+## ⚙️ Configuration (Very Important)
 
-### Run Python experiments
+All experiment settings are controlled via:
 
-```
-python main.py --algo bfs --repr list --n 1000
-```
+Key parameters:
 
-### Run full benchmark
-
-```
-python main.py --benchmark all
-```
-
-### Run C++ version
+```python
+BASE_DIR = Path(__file__).parent.parent.parent
+CPP_EXE_DIR = BASE_DIR / "cpp"
+DATASETS_DIR = BASE_DIR / "datasets"
+RESULTS_DIR = BASE_DIR / "results"
+RESULTS_DIR.mkdir(exist_ok=True)
 
 ```
+---
+## ⚡ C++ Implementation
+
+The project includes a C++ version to validate performance trends.
+
+▶ Build (CMake)
+```script
 cd cpp
-g++ main.cpp -o traversal
-./traversal data/graph.txt bfs
+mkdir build
+cd build
+cmake ..
+cmake --build . --config release
 ```
+
+💡 Notes
+C++ version is used for performance comparison
+Python is used for experimentation & analysis
+Results should be consistent in trend across both
 
 ---
 
 ## 🧪 Experimental Design
 
-To ensure fair comparison:
+To ensure fairness:
 
-* Same graph instance across runs
-* Fixed random seed
-* Controlled variables:
-
-  * Number of vertices (n)
-  * Edge density
-  * Graph type (tree / random / dense)
-
-Metrics collected:
-
-* Runtime (seconds)
-* Peak frontier size (memory proxy)
-* Number of visited nodes
+Same graph instance across runs
+- Fixed random seed
+- Controlled variables:
+- number of nodes (n)
+- edge density (p)
+- representation
+- algorithm
 
 ---
 
-## 📊 Results
+## 📊 Metrics
 
-### Example Observations
+We collect:
 
-* BFS exhibits **larger peak frontier** (higher memory usage)
-* DFS has **smaller memory footprint** but deeper traversal paths
-* Adjacency Matrix introduces **higher constant runtime cost**
-* Adjacency List is more efficient for sparse graphs
+- Runtime (execution time)
+- Visited nodes
+- Peak frontier size
 
-*(Insert plots here)*
+⚠️ Note:
 
-```
-[ runtime_vs_n.png ]
-[ frontier_vs_n.png ]
-```
+Peak frontier reflects exploration scale, not exact memory usage.
 
 ---
 
 ## 🧠 Key Insights
-
-* Asymptotic complexity does not fully explain real performance
-* Representation choice significantly impacts traversal cost
-* BFS vs DFS trade-off is primarily **memory vs traversal order**
-* Experimental validation is necessary to understand real-world behavior
-
----
-
-## ⚡ Python vs C++ Validation
-
-To ensure results are not language artifacts:
-
-* Core traversal algorithms were reimplemented in C++
-* Results compared across Python and C++ runtimes
-
-Conclusion:
-
-> Observed trends remain consistent across implementations, indicating they are inherent to the algorithm and data structure, not the language.
-
----
-
-## 🎯 Skills Demonstrated
-
-### 1. Modeling & Abstraction
-
-* Graph ADT design
-* Decoupling algorithm from representation
-* Formal reasoning about traversal behavior
-
-### 2. Engineering
-
-* Modular system design
-* Reproducible experiment pipeline
-* Cross-language implementation (Python + C++)
-
-### 3. Experimental Analysis
-
-* Controlled benchmarking
-* Metric design and collection
-* Visualization and interpretation
-
-### 4. Performance Reasoning
-
-* Time–space trade-off analysis
-* Constant-factor vs asymptotic behavior
-
+- BFS and DFS show similar runtime (O(V + E))
+- Representation is the dominant performance factor
+- Adjacency list outperforms matrix in sparse graphs
+- Graph density strongly affects exploration scale
+- Python vs C++ mainly differs in constant factors
+  
 ---
 
 ## 🧭 Future Work
-
-* Extend to weighted graphs and shortest path algorithms
-* Add parallel traversal experiments
-* Integrate visualization UI
-* Explore cache behavior and memory locality
-
----
-
-## 📌 Conclusion
-
-This project demonstrates how a simple algorithmic concept (graph traversal) can be expanded into a **structured experimental system**, bridging:
-
-* Theory (algorithms, complexity)
-* Engineering (system design)
-* Empirical analysis (benchmarking & validation)
+Cache behavior analysis
+Parallel traversal
+Real-world graph datasets
+Visualization UI
 
 ---
-
 ## 👤 Author
 
 Qiyun Ge
 Montreal, Canada
-
----
-
-## ⭐ If you find this project useful, feel free to star!
+grantnj.ge@gmail.com
